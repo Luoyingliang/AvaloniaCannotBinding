@@ -1,0 +1,95 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:this="clr-namespace:AvaloniaCannotBinding"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaCannotBinding.MainWindow"
+        x:CompileBindings="False"
+        Title="AvaloniaCannotBinding">
+    <Window.Resources>
+
+        <ControlTheme x:Key="{x:Type this:EmptyStateView}" TargetType="{x:Type this:EmptyStateView}">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Padding" Value="0 8 0 0" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type this:EmptyStateView}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="0">
+                            <ContentPresenter x:Name="PART_Content"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style Selector="^[IsEmptyStateVisible=True]">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type this:EmptyStateView}">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="8">
+                                <ContentPresenter x:Name="PART_EmptyState"
+                                                  Content="{TemplateBinding EmptyState}"
+                                                  ContentTemplate="{TemplateBinding EmptyStateTemplate}"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ControlTheme>
+    </Window.Resources>
+    <Window.DataContext>
+        <this:AppViewModel />
+    </Window.DataContext>
+
+
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top"
+                    Margin="0 0 0 32"
+                    Orientation="Horizontal">
+            <CheckBox x:Name="UseCode"
+                      Content="UseCode"/>
+            
+            <CheckBox Content="IsEmpty"
+                      IsChecked="{Binding IsEmpty, Mode=TwoWay}"
+                      IsCheckedChanged="OnIsEmptyChanged" />
+
+            <CheckBox Content="NotEmpty"
+                      IsChecked="{Binding NotEmpty, Mode=TwoWay}"
+                      IsCheckedChanged="OnNotEmptyChanged" />
+            
+            <CheckBox Content="Display CLR:IsEmpty"
+                      IsEnabled="False"
+                      IsChecked="{Binding IsEmpty, Mode=OneWay}" />
+
+            <CheckBox Content="Display CLR:NotEmpty"
+                      IsEnabled="False"
+                      IsChecked="{Binding NotEmpty, Mode=OneWay}" />
+        </StackPanel>
+
+        <this:EmptyStateView x:Name="ESV"
+                             IsEmpty="{Binding IsEmpty,Mode=OneWay}"
+                             NotEmpty="{Binding NotEmpty, Mode=OneWay}">
+            <this:EmptyStateView.EmptyState>
+                <Border Background="Brown" />
+            </this:EmptyStateView.EmptyState>
+
+
+            <Border Background="Olive" />
+        </this:EmptyStateView>
+    </DockPanel>
+</Window>
